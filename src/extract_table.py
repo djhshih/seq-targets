@@ -99,14 +99,14 @@ def process_intron(gene_name, alt_name, genome):
     # @ Just extract, calculate will be in another file
     gene_name_cmd = match_gene_name(gene_name, alt_name)
     ## ! Keep the numbering of extron for intron numbering:
-    full_command = f'awk -F\'[\\t;]\' \'{gene_name_cmd} && $3==\"exon\" {{print $1,$4-1,$5-1,$14,$16,$17}}\' {genome} >> intron.interval_list\n' 
+    full_command = f'awk -F\'[\\t;]\' \'{gene_name_cmd} && $3==\"exon\" {{print $1,$4-1,$5-1,$14,$16,$17}}\' {genome} >> intron.raw.interval_list\n' 
     return(full_command)
 
 def process_lnrna(gene_name, alt_name, genome):
     # ? Which entry to include (i.e. gene/transcript/exon)
     gene_name_cmd = match_gene_name(gene_name, alt_name)
     ## ! Keep the numbering of extron for intron numbering:
-    full_command = f'awk -F\'[\\t;]\' \'{gene_name_cmd} && $3==\"gene\" && /;gene_type=lncRNA;/ {{print $1,$4-1,$5-1,$7,$14,$16,$17}}\' {genome} >> lnrna.interval_list\n' 
+    full_command = f'awk -F\'[\\t;]\' \'{gene_name_cmd} && $3==\"gene\" && /;gene_type=lncRNA;/ {{print $1,$4-1,$5-1}}\' {genome} >> lnrna.interval_list\n' 
     return(full_command)
 
 def process_3utr(gene_name, alt_name, genome):
@@ -118,7 +118,7 @@ def process_3utr(gene_name, alt_name, genome):
 def process_promoter(gene_name, alt_name, genome):
     gene_name_cmd = match_gene_name(gene_name, alt_name)
     ## ! Extract with orientation: 
-    full_command = f'awk -F\'[\\t;]\' \'{gene_name_cmd} && $3==\"five_prime_UTR\" {{print $1,$4-1,$5-1,$7}}\' {genome} >> promoter.interval_list\n' 
+    full_command = f'awk -F\'[\\t;]\' \'{gene_name_cmd} && $3==\"five_prime_UTR\" {{print $1,$4-1,$5-1,$7}}\' {genome} >> promoter.raw.interval_list\n' 
     return(full_command)
 
 ## ~ Running:
