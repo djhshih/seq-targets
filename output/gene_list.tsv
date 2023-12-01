@@ -1,0 +1,346 @@
+gene_name	alt_name	region	info
+ABL1		extron	
+BRAF		extron	
+CDKN1A		extron	
+EPHA3		extron	
+FGFR4		extron	
+IKZF1		extron	
+MCL1		extron	
+NKX2-1		extron	
+PMS2		extron	
+RNF43		extron	
+TET2		extron	
+ACVR1B		extron	
+BRCA1		extron	
+CDKN1B		extron	
+EPHB1		extron	
+FH		extron	
+INPP4B		extron	
+MDM2		extron	
+NOTCH1		extron	
+POLD1		extron	
+ROS1		extron	
+TGFBR2		extron	
+AKT1		extron	
+BRCA2		extron	
+CDKN2A		extron	
+EPHB4		extron	
+FLCN		extron	
+IRF2		extron	
+MDM4		extron	
+NOTCH2		extron	
+POLE		extron	
+RPTOR		extron	
+TIPARP		extron	
+AKT2		extron	
+BRD4		extron	
+CDKN2B		extron	
+ERBB2		extron	
+FLT1		extron	
+IRF4		extron	
+MED12		extron	
+NOTCH3		extron	
+PPARG		extron	
+SDHA		extron	
+TNFAIP3		extron	
+AKT3		extron	
+BRIP1		extron	
+CDKN2C		extron	
+ERBB3		extron	
+FLT3		extron	
+IRS2		extron	
+MEF2B		extron	
+NPM1		extron	
+PPP2R1A		extron	
+SDHB		extron	
+TNFRSF14		extron	
+ALK		extron	
+BTG1		extron	
+CEBPA		extron	
+ERBB4		extron	
+FOXL2		extron	
+JAK1		extron	
+MEN1		extron	
+NRAS		extron	
+PPP2R2A		extron	
+SDHC		extron	
+TP53		extron	
+ALOX12B		extron	
+BTG2		extron	
+CHEK1		extron	
+ERCC4		extron	
+FUBP1		extron	
+JAK2		extron	
+MERTK		extron	
+NT5C2		extron	
+PRDM1		extron	
+SDHD		extron	
+TSC1		extron	
+AMER1		extron	
+BTK		extron	
+CHEK2		extron	
+ERG		extron	
+GABRA6		extron	
+JAK3		extron	
+MET		extron	
+NTRK1		extron	
+PRKAR1A		extron	
+SETD2		extron	
+TSC2		extron	
+APC		extron	
+C11orf30		extron	
+CIC		extron	
+ERRFI1		extron	
+GATA3		extron	
+JUN		extron	
+MITF		extron	
+NTRK2		extron	
+PRKCI		extron	
+SF3B1		extron	
+TYRO3		extron	
+AR		extron	
+CALR		extron	
+CREBBP		extron	
+ESR1		extron	
+GATA4		extron	
+KDM5A		extron	
+MKNK1		extron	
+NTRK3		extron	
+PTCH1		extron	
+SGK1		extron	
+U2AF1		extron	
+ARAF		extron	
+CARD11		extron	
+CRKL		extron	
+EZH2		extron	
+GATA6		extron	
+KDM5C		extron	
+MLH1		extron	
+P2RY8		extron	
+PTEN		extron	
+SMAD2		extron	
+VEGFA		extron	
+ARFRP1		extron	
+CASP8		extron	
+CSF1R		extron	
+FAM46C		extron	
+GID4	C17orf39	extron	
+KDM6A		extron	
+MPL		extron	
+PALB2		extron	
+PTPN11		extron	
+SMAD4		extron	
+VHL		extron	
+ARID1A		extron	
+CBFB		extron	
+CSF3R		extron	
+FANCA		extron	
+GNA11		extron	
+KDR		extron	
+MRE11A		extron	
+PARK2		extron	
+PTPRO		extron	
+SMARCA4		extron	
+WHSC1		extron	
+ASXL1		extron	
+CBL		extron	
+CTCF		extron	
+FANCC		extron	
+GNA13		extron	
+KEAP1		extron	
+MSH2		extron	
+PARP1		extron	
+QKI		extron	
+SMARCB1		extron	
+WHSC1L1		extron	
+ATM		extron	
+CCND1		extron	
+CTNNA1		extron	
+FANCG		extron	
+GNAQ		extron	
+KEL		extron	
+MSH3		extron	
+PARP2		extron	
+RAC1		extron	
+SMO		extron	
+WT1		extron	
+ATR		extron	
+CCND2		extron	
+CTNNB1		extron	
+FANCL		extron	
+GNAS		extron	
+KIT		extron	
+MSH6		extron	
+PARP3		extron	
+RAD21		extron	
+SNCAIP		extron	
+XPO1		extron	
+ATRX		extron	
+CCND3		extron	
+CUL3		extron	
+FAS		extron	
+GRM3		extron	
+KLHL6		extron	
+MST1R		extron	
+PAX5		extron	
+RAD51		extron	
+SOCS1		extron	
+XRCC2		extron	
+AURKA		extron	
+CCNE1		extron	
+CUL4A		extron	
+FBXW7		extron	
+GSK3B		extron	
+KMT2A	MLL	extron	
+MTAP		extron	
+PBRM1		extron	
+RAD51B		extron	
+SOX2		extron	
+ZNF217		extron	
+AURKB		extron	
+CD22		extron	
+CXCR4		extron	
+FGF10		extron	
+H3F3A		extron	
+KMT2D	MLL2	extron	
+MTOR		extron	
+PDCD1		extron	
+RAD51C		extron	
+SOX9		extron	
+ZNF703		extron	
+AXIN1		extron	
+CD274		extron	
+CYP17A1		extron	
+FGF12		extron	
+HDAC1		extron	
+KRAS		extron	
+MUTYH		extron	
+PDCD1LG2		extron	
+RAD51D		extron	
+SPEN		extron	
+AXL		extron	
+CD70		extron	
+DAXX		extron	
+FGF14		extron	
+HGF		extron	
+LTK		extron	
+MYC		extron	
+PDGFRA		extron	
+RAD52		extron	
+SPOP		extron	
+BAP1		extron	
+CD79A		extron	
+DDR1		extron	
+FGF19		extron	
+HNF1A		extron	
+LYN		extron	
+MYCL		extron	
+PDGFRB		extron	
+RAD54L		extron	
+SRC		extron	
+BARD1		extron	
+CD79B		extron	
+DDR2		extron	
+FGF23		extron	
+HRAS		extron	
+MAF		extron	
+MYCN		extron	
+PDK1		extron	
+RAF1		extron	
+STAG2		extron	
+BCL2		extron	
+CDC73		extron	
+DIS3		extron	
+FGF3		extron	
+HSD3B1		extron	
+MAP2K1		extron	
+MYD88		extron	
+PIK3C2B		extron	
+RARA		extron	
+STAT3		extron	
+BCL2L1		extron	
+CDH1		extron	
+DNMT3A		extron	
+FGF4		extron	
+ID3		extron	
+MAP2K2		extron	
+NBN		extron	
+PIK3C2G		extron	
+RB1		extron	
+STK11		extron	
+BCL2L2		extron	
+CDK12		extron	
+DOT1L		extron	
+FGF6		extron	
+IDH1		extron	
+MAP2K4		extron	
+NF1		extron	
+PIK3CA		extron	
+RBM10		extron	
+SUFU		extron	
+BCL6		extron	
+CDK4		extron	
+EED		extron	
+FGFR1		extron	
+IDH2		extron	
+MAP3K1		extron	
+NF2		extron	
+PIK3CB		extron	
+REL		extron	
+SYK		extron	
+BCOR		extron	
+CDK6		extron	
+EGFR		extron	
+FGFR2		extron	
+IGF1R		extron	
+MAP3K13		extron	
+NFE2L2		extron	
+PIK3R1		extron	
+RET		extron	
+TBX3		extron	
+BCORL1		extron	
+CDK8		extron	
+EP300		extron	
+FGFR3		extron	
+IKBKE		extron	
+MAPK1		extron	
+NFKBIA		extron	
+PIM1		extron	
+RICTOR		extron	
+TEK		extron	
+ALK		intron	18,19
+BRCA1		intron	2,7,8,12,16,19,20
+ETV4		intron	8
+EZR		intron	9,10,11
+KIT		intron	16
+MYC		intron	1
+NUTM1		intron	1
+RET		intron	7,8,9,10,11
+SLC34A2		intron	4
+BCL2		3’utr	
+BRCA2		intron	2
+ETV5		intron	6,7
+FGFR1		intron	1,5,17
+KMT2A	MLL	intron	6,7,8,9,10,11
+NOTCH2		intron	26
+PDGFRA		intron	7,9,11
+ROS1		intron	31,32,33,34,35
+TERC		ncrna	
+BCR		intron	8,13,14
+CD74		intron	6,7,8
+ETV6		intron	5,6
+FGFR2		intron	1,17
+MSH2		intron	5
+NTRK1		intron	8,9,10,11
+RAF1		intron	4,5,6,7,8
+RSPO2		intron	1
+TERT		promoter	
+BRAF		intron	7,8,9,10
+EGFR		intron	7,15,24,25,26,27
+EWSR1		intron	7,8,9,10,11,12,13
+FGFR3		intron	17
+MYB		intron	14
+NTRK2		intron	12
+RARA		intron	2
+SDC4		intron	2
+TMPRSS2		intron	1,2,3
