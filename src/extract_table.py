@@ -99,7 +99,7 @@ def process_intron(gene_name, alt_name, genome):
     # @ Just extract, calculate will be in another file
     gene_name_cmd = match_gene_name(gene_name, alt_name)
     ## ! Keep the numbering of extron for intron numbering:
-    full_command = f'awk -F\'[\\t;]\' \'{gene_name_cmd} && $3==\"exon\" {{print $1,$4-1,$5-1,$14,$16,$17}}\' {genome} >> intron.raw.interval_list\n' 
+    full_command = f'awk -F\'[\\t;]\' \'{gene_name_cmd} && $3==\"exon\" {{print $1,$4-1,$5-1,$7, $14,$16,$17}}\' {genome} >> intron.raw.interval_list\n' 
     return(full_command)
 
 def process_lnrna(gene_name, alt_name, genome):
@@ -126,6 +126,7 @@ tsv_out = open("../output/gene_list.tsv", "w+")
 bash_out= open("../output/subset_gff3.sh","w+")
 tsv_out.write("gene_name\talt_name\tregion\tinfo\n")
 bash_out.write("#/bin/bash\n")
+bash_out.write("rm *.interval_list\n")
 
 ### ~ Tidy coding extrons
 for sub_list in extrons_raw:
