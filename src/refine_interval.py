@@ -1,6 +1,6 @@
 import re
 
-# @ Clean the intron.interval_list
+# @ Clean the intron.interval_list.raw
 ## @ Read in the gene list and grab all targets:
 target_gene_list = [[],[]]
 with open("../output/gene_list.tsv") as f:
@@ -32,6 +32,7 @@ with open("../output/intron.interval_list.raw") as f:
         # @ Current_line: CHROM, START, END, STRAND, GENE, TRANSCRIPT, EXON_NUMBER
         current_line = line.split()
         current_line = [re.sub("^.+?=","",i) for i in current_line]
+        current_line[0] = current_line[0].replace("chr", "")
         
         # @ 1. Check whether changed the gene:
         if current_line[4] != target_gene:
@@ -76,13 +77,40 @@ all_output_lines = list(all_output_lines)
 with open("../output/intron.interval_list", "w+") as f:
     f.writelines(all_output_lines)
 
-# @ Clean the promoter.interval_list
-promoter_output = open("../output/promoter.interval_list", "w+")
+# @ Clean the promoter.interval_list.raw
+all_output_lines = set()
 with open("../output/promoter.interval_list.raw") as f:
     for line in f:
         current_line = line.split()
+        current_line[0] = current_line[0].replace("chr", "")
         # @ Determine by strand:
         if current_line[3] == "+":
-            promoter_output.write(f'{current_line[0]}\t{int(current_line[1]) - 500}\t{int(current_line[2])}\n')
+            all_output_lines.add(f'{current_line[0]}\t{int(current_line[1]) - 500}\t{int(current_line[2])}\n')
         else:
-            promoter_output.write(f'{current_line[0]}\t{int(current_line[1])}\t{int(current_line[2]) + 500}\n')
+            all_output_lines.add(f'{current_line[0]}\t{int(current_line[1])}\t{int(current_line[2]) + 500}\n')
+
+all_output_lines = list(all_output_lines)
+with open("../output/promoter.interval_list", "w+") as f:
+    f.writelines(all_output_lines)
+
+
+# @ Clean rest interval_list.raw
+## @ Remove duplication + remove dummy line
+def clean_interval_list(input_path):
+    all_output_lines = set()
+    with open(input_path) as f:
+        for line in f:
+            current_line = line.split()
+            current_line[0] = current_line[0].replace("chr", "")
+            if current_line[1] == current_line[2]:
+                continue
+            all_output_lines.add(f'{current_line[0]}\t{current_line[1]}\t{current_line[2]}\n')
+
+    all_output_lines = list(all_output_lines)
+    output_path = input_path.replace(".raw","")
+    with open(output_path, "w+") as f:
+        f.writelines(all_output_lines)
+
+clean_interval_list("../output/extron.interval_list.raw")
+clean_interval_list("../output/3utr.interval_list.raw")
+clean_interval_list("../output/lnrna.interval_list.raw")

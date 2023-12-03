@@ -92,7 +92,7 @@ def match_gene_name(gene_name, alt_name):
 def process_extron(gene_name, alt_name, genome):
     gene_name_cmd = match_gene_name(gene_name, alt_name)
     ## ! Directly extracted:
-    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"exon\" {{print $1,$4-1,$5-1}}\' {genome} >> extron.interval_list\n' 
+    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"exon\" {{print $1,$4-1,$5-1}}\' {genome} >> extron.interval_list.raw\n' 
     return(full_command)
 
 def process_intron(gene_name, alt_name, genome):
@@ -106,13 +106,13 @@ def process_lnrna(gene_name, alt_name, genome):
     # ? Which entry to include (i.e. gene/transcript/exon)
     gene_name_cmd = match_gene_name(gene_name, alt_name)
     ## ! Keep the numbering of extron for intron numbering:
-    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"gene\" && /;gene_type=lncRNA;/ {{print $1,$4-1,$5-1}}\' {genome} >> lnrna.interval_list\n' 
+    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"gene\" && /;gene_type=lncRNA;/ {{print $1,$4-1,$5-1}}\' {genome} >> lnrna.interval_list.raw\n' 
     return(full_command)
 
 def process_3utr(gene_name, alt_name, genome):
     gene_name_cmd = match_gene_name(gene_name, alt_name)
     ## ! Direct extract:
-    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"three_prime_UTR\" {{print $1,$4-1,$5-1}}\' {genome} >> 3utr.interval_list\n' 
+    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"three_prime_UTR\" {{print $1,$4-1,$5-1}}\' {genome} >> 3utr.interval_list.raw\n' 
     return(full_command)
 
 def process_promoter(gene_name, alt_name, genome):
