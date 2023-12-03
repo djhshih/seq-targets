@@ -1,8 +1,6 @@
 import re
 
 # @ Clean the intron.interval_list
-intron_output = open("../output/intron.interval_list", "w+")
-
 ## @ Read in the gene list and grab all targets:
 target_gene_list = [[],[]]
 with open("../output/gene_list.tsv") as f:
@@ -13,7 +11,6 @@ with open("../output/gene_list.tsv") as f:
             intron_vec = [int(i) for i in current_line[-1].split(',')]
             target_gene_list[1].append(intron_vec)
 
-print(target_gene_list)
 ## @ Read line by line of interval list, calculate the exon and exon number:
 
 ## * Pointers initialization
@@ -27,10 +24,11 @@ transcript_end_coordinate = 0
 ## * A flag to indicate whether we have record the end of previous
 record_flag = False
 
+## * Keep a set to remove duplicate line for output:
+all_output_lines = set()
+
 with open("../output/intron.raw.interval_list") as f:
-    index = 0 
     for line in f:
-        index = index + 1
         # @ Current_line: CHROM, START, END, STRAND, GENE, TRANSCRIPT, EXON_NUMBER
         current_line = line.split()
         current_line = [re.sub("^.+?=","",i) for i in current_line]
@@ -57,8 +55,7 @@ with open("../output/intron.raw.interval_list") as f:
             else:
                 transcript_start_coordinate = int(current_line[2]) + 1
             # * Record target exon:
-
-            intron_output.write(f'{current_line[0]}\t{transcript_start_coordinate}\t{transcript_end_coordinate}\n')
+            all_output_lines.add(f'{current_line[0]}\t{transcript_start_coordinate}\t{transcript_end_coordinate}\n')
 
         # @ Check whether we need to calculate this exon:
         # @@ Correct transcript + extron number:
@@ -73,7 +70,12 @@ with open("../output/intron.raw.interval_list") as f:
                 transcript_end_coordinate = int(current_line[1]) - 1
             # * Remove current intron index
             target_intron = target_intron[1:]
-            
+
+# @ Write the final output
+all_output_lines = list(all_output_lines)
+with open("../output/intron.interval_list", "w+") as f:
+    f.writelines(all_output_lines)
+
 # @ Clean the promoter.interval_list
 promoter_output = open("../output/promoter.interval_list", "w+")
 with open("../output/promoter.raw.interval_list") as f:
