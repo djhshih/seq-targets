@@ -27,7 +27,7 @@ record_flag = False
 ## * Keep a set to remove duplicate line for output:
 all_output_lines = set()
 
-with open("../output/intron.raw.interval_list") as f:
+with open("../output/intron.interval_list.raw") as f:
     for line in f:
         # @ Current_line: CHROM, START, END, STRAND, GENE, TRANSCRIPT, EXON_NUMBER
         current_line = line.split()
@@ -78,7 +78,7 @@ with open("../output/intron.interval_list", "w+") as f:
 
 # @ Clean the promoter.interval_list
 promoter_output = open("../output/promoter.interval_list", "w+")
-with open("../output/promoter.raw.interval_list") as f:
+with open("../output/promoter.interval_list.raw") as f:
     for line in f:
         current_line = line.split()
         # @ Determine by strand:
