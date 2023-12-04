@@ -20,5 +20,5 @@ python refine_interval.py
 cd ../output
 cat *.interval_list > target_regions.bed
 bedtools sort -i target_regions.bed > target_regions.sorted.bed
-#rm *.interval_list
-#rm *.interval_list.raw
+rm *.interval_list
+rm *.interval_list.raw

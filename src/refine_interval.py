@@ -32,7 +32,7 @@ with open("../output/intron.interval_list.raw") as f:
         # @ Current_line: CHROM, START, END, STRAND, GENE, TRANSCRIPT, EXON_NUMBER
         current_line = line.split()
         current_line = [re.sub("^.+?=","",i) for i in current_line]
-        current_line[0] = current_line[0].replace("chr", "")
+        #current_line[0] = current_line[0].replace("chr", "")
         
         # @ 1. Check whether changed the gene:
         if current_line[4] != target_gene:
@@ -82,7 +82,7 @@ all_output_lines = set()
 with open("../output/promoter.interval_list.raw") as f:
     for line in f:
         current_line = line.split()
-        current_line[0] = current_line[0].replace("chr", "")
+        #current_line[0] = current_line[0].replace("chr", "")
         # @ Determine by strand:
         if current_line[3] == "+":
             all_output_lines.add(f'{current_line[0]}\t{int(current_line[1]) - 500}\t{int(current_line[2])}\n')
@@ -101,7 +101,7 @@ def clean_interval_list(input_path):
     with open(input_path) as f:
         for line in f:
             current_line = line.split()
-            current_line[0] = current_line[0].replace("chr", "")
+            #current_line[0] = current_line[0].replace("chr", "")
             if current_line[1] == current_line[2]:
                 continue
             all_output_lines.add(f'{current_line[0]}\t{current_line[1]}\t{current_line[2]}\n')
