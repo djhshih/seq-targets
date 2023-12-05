@@ -2,7 +2,8 @@
 
 Extract the target gene interval list from FoundationOneCDx.
 
-Current target gene list available at :https://www.accessdata.fda.gov/cdrh_docs/pdf17/P170019S006C.pdf
+* FoundationOneCDx :https://www.accessdata.fda.gov/cdrh_docs/pdf17/P170019S006C.pdf
+* FoundationOne Liquid CDx: https://www.accessdata.fda.gov/cdrh_docs/pdf19/P190032S005C.pdf
 
 ## Required python package:
 * pdfplumber
