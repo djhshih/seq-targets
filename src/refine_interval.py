@@ -29,7 +29,7 @@ all_output_lines = set()
 
 with open("../output/intron.interval_list.raw") as f:
     for line in f:
-        # @ Current_line: CHROM, START, END, STRAND, GENE, TRANSCRIPT, EXON_NUMBER
+        # @ current_line: CHROM, START, END, STRAND, GENE, TRANSCRIPT, EXON_NUMBER
         current_line = line.split()
         current_line = [re.sub("^.+?=","",i) for i in current_line]
         #current_line[0] = current_line[0].replace("chr", "")
