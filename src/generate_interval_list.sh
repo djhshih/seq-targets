@@ -16,9 +16,10 @@ python extract_table.py
 # ! Step 4: Refine the interval list
 python refine_interval.py
 
-# ! Step 5: Merge all things together and sort bed file:
+# ! Step 5: Merge all things + sort & merge bed file:
 cd ../output
 cat *.interval_list > target_regions.bed
-bedtools sort -i target_regions.bed > target_regions.sorted.bed
-rm *.interval_list
-rm *.interval_list.raw
+
+#rm *.interval_list
+#rm *.interval_list.raw
+bedtools sort -i target_regions.bed | bedtools merge -i - > target_regions.sorted.bed
