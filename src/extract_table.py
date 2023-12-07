@@ -115,6 +115,8 @@ def clean_input_raw_gene_annotation(input_gene_string):
             target_intron = transform_interval_to_list(re.sub(r"[a-zA-Z]","",description)).strip()
         # @ utr, ncrna, promoter
         elif re.match(r"(.*UTR)|(ncRNA)|([Pp]romoter)",description):
+            # * Deal with non-unicode
+            description = ''.join([i if ord(i) < 128 else '' for i in description])
             other_info = description.strip()
         # @ alternative_name
         else:
