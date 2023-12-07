@@ -67,22 +67,18 @@ with open(args.gff) as f:
                 if target_gene_dict[current_gene][2] == "Promoter":
                     if line[2] == "five_prime_UTR":
                         promoter_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
-                        continue
                 elif target_gene_dict[current_gene][2] == "3UTR":
                     if line[2] == "three_prime_UTR":
                         three_utr_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
-                        continue
                 elif target_gene_dict[current_gene][2] == "ncRNA":
                     if line[2] == "gene" and f';gene_type=lncRNA;' in line[8]:
                         ncrna_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
-                        continue
                 
                 # @ Extron or intron?
                 if target_gene_dict[current_gene][1] != "":
                     # * Extron:
                     if line[2] == "exon":
                         exon_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
-                        continue
                 else:
                     # * Intron
                     if line[2] == "exon":
