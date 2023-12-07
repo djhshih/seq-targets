@@ -1,38 +1,42 @@
 import pdfplumber
 import re
+import argparse
 
-target_genome = "../gtf/gencode.v44lift37.annotation.gff3"
+# ! Args:
+parser = argparse.ArgumentParser(description="Process input pdf file, extract table and info for each gene")
 
-## ~ Input:
-### ~ Target input
-#### ~ P4: Full coding extrons
-#### ~ P5: Selected introns
-pdf_in = pdfplumber.open("../output/gene_list_meta.pdf")
-extrons_raw = pdf_in.pages[3].extract_table()
-introns_raw = pdf_in.pages[4].extract_table()
+### ~ Add the arguments
+parser.add_argument("--target_pdf", type=str, required=True, help="Path to the target PDF file.")
+parser.add_argument("--target_page", type=int, nargs='+', required=True, help="List of target pages.")
+parser.add_argument("--output", type=str, required=True, help="Path to the output table.")
 
-## ~ Target output
-### ~ 1: a human-readable table for all extracted information
-#### ~ gene_name_1 \t alt_name  \t region \t info 
+
+### ~ Parse the arguments
+args = parser.parse_args()
+
+### ~ Example usage:
+# * python extract_table.py --target_pdf /path/to/pdf --target_page 1 2 3 --output /path/to/output
+
+### ! Expected patter in the annotation:
+# * Information in <> are optional
+# * GENE_NAME <(ALTERNATIVE_NAME)> <[ or { or (> <indicator of region> INFORMATION <] or } or )> 
+# * Also some \n are expected. 
+
+
+# ! ~ Target output
+### ~  A human-readable table for all extracted information
 #### ~ gene_name_1: name of gene
 #### ~ alt_name: alternative gene name (if have)
-#### ~ region: intron/extron/3utr/promoter
-#### ~ info: additional information
+#### ~ target_intron: intron number to be extract
+#### ~ other_info: additional information
 
-### ~ 2: A bash code
-#### ~ Generate subset of gff3 files contains all target genes
-#### ~ for further refinement.
-
-## ~ Functions
-# @ intron entry:
-# @@ Input: intron(s) xx,xx-xx,xx 
-# @@ Output: xx,xx,xx,xx, include all intervals
-def clean_intron_entry(input_entry):
-    target_intervals = input_entry.replace("intron ","").\
-        replace("introns ","").split(",")
-
+# ! Functions
+#### ~ Transform input interval like xx, xx-xx, xx 
+#### ~ to xx,xx,xx,xx,xx that include all numbers
+def transform_interval_to_list(input_interval):
     full_interval = []
-    for sub_interval in target_intervals:
+    input_interval = input_interval.split(",")
+    for sub_interval in input_interval:
         if re.search("-", sub_interval):
             start, end = sub_interval.split("-")
             start = int(start)
@@ -44,113 +48,92 @@ def clean_intron_entry(input_entry):
 
     return(",".join(full_interval))
 
-# @ Clean the full input in various cases: 
-def clean_input_string(input_string, extron = True):
-    alt_name = ""
-    # @ Detect possible alternative name of gene:
-    if re.search("\\(",input_string):
-        # @ Extract alternative name
-        alt_name = re.findall("\\((.*?)\\)", input_string)[0]
-        alt_name = alt_name.strip()
-        # @ Replace alternative name
-        input_string = \
-            input_string.replace("(","").\
-            replace(alt_name,"").replace(")","")
+
+#### ~ Clean the string and get all information we need:
+#### ~ Expected return: gene_name, alt_name, target_extrons, other_info
+def clean_input_raw_gene_annotation(input_gene_string):
+    # @ Remove non-sense items:
+    input_gene_string = input_gene_string.replace("\n", " ").replace("*","").strip()
+
+    # @ Bug fix for ALOX12B
+    input_gene_string = input_gene_string.replace("A LOX12B", "ALOX12B")
     
-    # @ Split by the first /n, get the gene name
-    input_split = input_string.split("\n",1)
-    gene_name = input_split[0].strip()
+    # @ Refine following information:
+    ## @ (Coding Exons ...)
+    ## @ (alternative designation exon ...)
+    input_gene_string = re.sub(r"\(Coding Exons[^)]*\)", "", input_gene_string)
+    matched_extron = re.search(r"exon (\d+)", input_gene_string)
+    #print(matched_extron)
+    if matched_extron:
+        input_gene_string = re.sub(r"\(alternative designation exon (\d+)\)", f',{matched_extron.group(1)}', input_gene_string)
     
-    # @ Extron:
-    if extron:
-        return(gene_name, alt_name, "extron", "")
+    # @ Refine bracket:
+    input_gene_string = re.sub(r"\(|\{|\[","(", input_gene_string)
+    input_gene_string = re.sub(r"\)|\}|\]",")", input_gene_string)
+
+    # @ Split by the first whitespace and get the gene name:
+    input_split = input_gene_string.split(" ", 1)
+    target_gene = input_split[0]
+
+    if len(input_split) == 1:
+        return(f'{target_gene}\t\t\t\n')
+    
+    # @ Add proper brackets:
+    ### @ After this step, all information are separated by ()
+    new_annotation_string = ""
+    ### @ Flag indicate whether we need to add ( or )
+    input_split[1] = input_split[1].replace(" ","").strip()
+    left_flag = input_split[1][0] != "("
+    for i in input_split[1]:
+        if i != "(" and left_flag:
+            left_flag = False
+            new_annotation_string += "("
+        if i == ")":
+            left_flag = True
+        new_annotation_string += i
+
+    if i != ")":
+        new_annotation_string += ")"
 
 
-    info = input_split[1].lower().\
-            replace("\n","").replace("*","").\
-            replace("- ", "-"). replace(", ",",").\
-            strip()
-    # @ utr, ncrna, promoter
-    if re.search("(utr)|(ncrna)|(promoter)",info):
-        return(gene_name, alt_name, info, "")
+    # @ Breakdown the bracket
+    bracket_pattern = r"\(.*?\)"
+    all_item_in_bracket = re.findall(bracket_pattern, new_annotation_string)
+    all_item_in_bracket = [re.sub(r"\(|\)", "", item) for item in all_item_in_bracket]
 
-    # @ introns:
-    else:
-        info = clean_intron_entry(info)
-        return(gene_name, alt_name, "intron", info)
+    #print(f'{target_gene} \t {all_item_in_bracket}')
+    # @ Further clean things in the bracket:
 
-# @ Generate awk commands to extract target gene from gtf
-def match_gene_name(gene_name, alt_name):
-    if alt_name == "":
-        gene_name_cmd = f'/;gene_name={gene_name};/'
-    else:
-        gene_name_cmd = f'(/;gene_name={gene_name};/||/;gene_name={alt_name};/)'
-    return(gene_name_cmd)
-
-## ! -1 for the coordinate to generate 0-based interval list
-
-def process_extron(gene_name, alt_name, genome):
-    gene_name_cmd = match_gene_name(gene_name, alt_name)
-    ## ! Directly extracted:
-    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"exon\" {{print $1,$4-1,$5-1}}\' {genome} >> extron.interval_list.raw\n' 
-    return(full_command)
-
-def process_intron(gene_name, alt_name, genome):
-    # @ Just extract, calculate will be in another file
-    gene_name_cmd = match_gene_name(gene_name, alt_name)
-    ## ! Keep the numbering of extron for intron numbering:
-    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"exon\" {{print $1,$4-1,$5-1,$7, $14,$16,$17}}\' {genome} >> intron.interval_list.raw\n' 
-    return(full_command)
-
-def process_lnrna(gene_name, alt_name, genome):
-    # ? Which entry to include (i.e. gene/transcript/exon)
-    gene_name_cmd = match_gene_name(gene_name, alt_name)
-    ## ! Keep the numbering of extron for intron numbering:
-    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"gene\" && /;gene_type=lncRNA;/ {{print $1,$4-1,$5-1}}\' {genome} >> lnrna.interval_list.raw\n' 
-    return(full_command)
-
-def process_3utr(gene_name, alt_name, genome):
-    gene_name_cmd = match_gene_name(gene_name, alt_name)
-    ## ! Direct extract:
-    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"three_prime_UTR\" {{print $1,$4-1,$5-1}}\' {genome} >> 3utr.interval_list.raw\n' 
-    return(full_command)
-
-def process_promoter(gene_name, alt_name, genome):
-    gene_name_cmd = match_gene_name(gene_name, alt_name)
-    ## ! Extract with orientation: 
-    full_command = f'awk \'BEGIN {{FS=\"[\\t;]\"; OFS=\"\\t\"}} {gene_name_cmd} && $3==\"five_prime_UTR\" {{print $1,$4-1,$5-1,$7}}\' {genome} >> promoter.interval_list.raw\n' 
-    return(full_command)
-
-## ~ Running:
-tsv_out = open("../output/gene_list.tsv", "w+")
-bash_out= open("../output/subset_gff3.sh","w+")
-tsv_out.write("gene_name\talt_name\tregion\tinfo\n")
-bash_out.write("#/bin/bash\n")
-bash_out.write("rm *.interval_list\n")
-bash_out.write("rm *.interval_list.raw\n")
-
-### ~ Tidy coding extrons
-for sub_list in extrons_raw:
-    for sub_gene in sub_list:
-        if sub_gene == "":
+    target_intron = ""
+    other_info = ""
+    target_gene_alt_name = ""
+    for description in all_item_in_bracket:
+        # @ intron or extron
+        if re.match(r"[eE]xtron|[eE]xon", description):
             continue
-        gene_name, alt_name, region, info = clean_input_string(sub_gene, extron = True)
-        tsv_out.write(f'{gene_name}\t{alt_name}\t{region}\t{info}\n')
-        bash_out.write(process_extron(gene_name, alt_name, target_genome))
-
-### ~ Tidy selected introns
-for sub_list in introns_raw:
-    for sub_gene in sub_list:
-        if sub_gene == "":
-            continue
-        gene_name, alt_name, region, info = clean_input_string(sub_gene, extron = False)
-        tsv_out.write(f'{gene_name}\t{alt_name}\t{region}\t{info}\n')
-        
-        if re.search("utr",region):
-            bash_out.write(process_3utr(gene_name, alt_name, target_genome))
-        elif re.search("ncrna",region):
-            bash_out.write(process_lnrna(gene_name, alt_name, target_genome))
-        elif re.search("promoter",region):
-            bash_out.write(process_promoter(gene_name, alt_name, target_genome))
+        elif re.match(r"[iI]ntron", description):
+            target_intron = transform_interval_to_list(re.sub(r"[a-zA-Z]","",description)).strip()
+        # @ utr, ncrna, promoter
+        elif re.match(r"(.*UTR)|(ncRNA)|([Pp]romoter)",description):
+            other_info = description.strip()
+        # @ alternative_name
         else:
-            bash_out.write(process_intron(gene_name, alt_name, target_genome))
+            target_gene_alt_name = description.strip()
+
+    return(f'{target_gene}\t{target_gene_alt_name}\t{target_intron}\t{other_info}\n')
+
+
+
+# ! Workflow:
+pdf_in = pdfplumber.open(args.target_pdf)
+table_out = open(args.output, "w+")
+table_out.write(f'gene_name\talt_name\ttarget_introns\tother_info\n')
+for page in args.target_page:
+    temp_table = pdf_in.pages[page-1].extract_table()
+    for item in temp_table:
+        for sub_item in item:
+            if sub_item == "":
+                continue
+            else: 
+                sub_item = sub_item.replace("\n", " ").replace("*","").replace("- ","-").strip()
+                table_out.write(clean_input_raw_gene_annotation(sub_item))
