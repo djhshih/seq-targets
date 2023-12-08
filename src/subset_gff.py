@@ -29,11 +29,11 @@ with open(args.target_table) as f:
     next(f)
     for line in f:
         # @ gene, alt_name, intron, others
-        line = line.strip().split("\t")
+        line = line.split("\t")
         dict_item = ["","",""]
         if len(line) > 1 :
             for i in range(len(line[1:])):
-                dict_item[i] = line[i + 1]
+                dict_item[i] = line[i + 1].strip()
 
         target_gene_dict[line[0]] = dict_item
 
