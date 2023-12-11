@@ -37,7 +37,6 @@ with open(args.target_table) as f:
 
         target_gene_dict[line[0]] = dict_item
 
-# print(target_gene_dict)
 
 # ! Prepare all the output files:
 output_path = args.output_path
@@ -55,7 +54,7 @@ with open(args.gff) as f:
     for line in f:
         if(line[0]) == "#":
             continue
-        # @ chrm, _ , _ , start, end, _ , strand, _ , info
+        # @ chrm, "HAVANA", region , start, end, _ , strand, _ , info
         line = line.split("\t")
 
         # @ Find the target gene 
@@ -75,7 +74,7 @@ with open(args.gff) as f:
                         ncrna_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
                 
                 # @ Extron or intron?
-                if target_gene_dict[current_gene][1] != "":
+                if target_gene_dict[current_gene][1] == "":
                     # * Extron:
                     if line[2] == "exon":
                         exon_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
@@ -84,5 +83,5 @@ with open(args.gff) as f:
                     if line[2] == "exon":
                         extend_info = line[8].strip().split(";")
                         extend_info = line[8].strip().split(";")
-                        intron_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\t{extend_info[5]}\t{extend_info[7]}\t{extend_info[8]}\n')
+                        intron_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\t{line[6]}\t{extend_info[5]}\t{extend_info[7]}\t{extend_info[8]}\n')
         
