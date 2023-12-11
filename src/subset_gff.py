@@ -65,23 +65,23 @@ with open(args.gff) as f:
                 # @ Whether non-extron/intron? :
                 if target_gene_dict[current_gene][2] == "Promoter":
                     if line[2] == "five_prime_UTR":
-                        promoter_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\t{line[6]}\n')
+                        promoter_out.write(f'{line[0]}\t{int(line[3]) - 1}\t{line[4]}\t{line[6]}\n')
                 elif target_gene_dict[current_gene][2] == "3UTR":
                     if line[2] == "three_prime_UTR":
-                        three_utr_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
+                        three_utr_out.write(f'{line[0]}\t{int(line[3]) - 1}\t{line[4]}\n')
                 elif target_gene_dict[current_gene][2] == "ncRNA":
                     if line[2] == "gene" and f';gene_type=lncRNA;' in line[8]:
-                        ncrna_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
+                        ncrna_out.write(f'{line[0]}\t{int(line[3]) - 1}\t{line[4])- 1}\n')
                 
                 # @ Extron or intron?
                 if target_gene_dict[current_gene][1] == "":
                     # * Extron:
                     if line[2] == "exon":
-                        exon_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
+                        exon_out.write(f'{line[0]}\t{int(line[3]) - 1}\t{line[4]}\n')
                 else:
                     # * Intron
                     if line[2] == "exon":
                         extend_info = line[8].strip().split(";")
                         extend_info = line[8].strip().split(";")
-                        intron_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\t{line[6]}\t{extend_info[5]}\t{extend_info[7]}\t{extend_info[8]}\n')
+                        intron_out.write(f'{line[0]}\t{int(line[3]) - 1}\t{line[4]}\t{line[6]}\t{extend_info[5]}\t{extend_info[7]}\t{extend_info[8]}\n')
         
