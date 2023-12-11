@@ -54,7 +54,7 @@ with open(f'{input_path}{args.input_prefix}.intron.interval_list.raw') as f:
         current_line = [re.sub("^.+?=","",i) for i in current_line]
         
         # @ 0. Include this extron first:
-        all_output_lines.add(f'\t{current_line[1]}\t{current_line[2]}\n')
+        all_output_lines.add(f'{current_line[0]}\t{current_line[1]}\t{current_line[2]}\n')
         
         # @ 1. Check whether changed the gene:
         if current_line[4] != target_gene:
