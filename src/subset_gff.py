@@ -65,7 +65,7 @@ with open(args.gff) as f:
                 # @ Whether non-extron/intron? :
                 if target_gene_dict[current_gene][2] == "Promoter":
                     if line[2] == "five_prime_UTR":
-                        promoter_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
+                        promoter_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\t{line[6]}\n')
                 elif target_gene_dict[current_gene][2] == "3UTR":
                     if line[2] == "three_prime_UTR":
                         three_utr_out.write(f'{line[0]}\t{line[3]}\t{int(line[4]) - 1}\n')
