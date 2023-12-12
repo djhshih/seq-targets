@@ -71,7 +71,7 @@ with open(args.gff) as f:
                         three_utr_out.write(f'{line[0]}\t{int(line[3]) - 1}\t{line[4]}\n')
                 elif target_gene_dict[current_gene][2] == "ncRNA":
                     if line[2] == "gene" and f';gene_type=lncRNA;' in line[8]:
-                        ncrna_out.write(f'{line[0]}\t{int(line[3]) - 1}\t{line[4]- 1}\n')
+                        ncrna_out.write(f'{line[0]}\t{int(line[3]) - 1}\t{line[4]}\n')
                 
                 # @ Extron or intron?
                 if target_gene_dict[current_gene][1] == "":
